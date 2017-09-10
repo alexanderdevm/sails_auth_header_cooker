@@ -20,7 +20,7 @@ module.exports = function (req, res, next) {
       if (/^Bearer$/i.test(scheme)) {
         token = credentials;
       } else {
-        return res.json(401, { err: 'Format is Authorization: Bearer [token]' });
+        return res.forbidden({ err: 'Format is Authorization: Bearer [token]' });
       }
     } else if (req.param('token')) {
       token = req.param('token');
@@ -28,18 +28,18 @@ module.exports = function (req, res, next) {
       //delete token from param to keep blueprints functional
       delete req.query.token;
     } else {
-      return res.json(401, { err: 'No Authorization header was found' });
+      return res.forbidden({ err: 'No Authorization header was found' });
     }
 
     jwToken.verify(token, function (err, token) {
       if (err) {
-        return res.json(401, { err: 'Invalid Token' });
+        return res.forbidden({ err: 'Invalid Token' });
       }
       req.token = token;
       next();
     });
   } else {
-    return res.negotiate({ err: "Missing Authorization: Bearer [token] header" });
+    return res.badRequest({ err: "Missing Authorization: Bearer [token] header" });
   }
 
 };

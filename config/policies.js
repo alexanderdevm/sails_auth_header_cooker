@@ -53,14 +53,10 @@ module.exports.policies = {
   '*': ['isAuthorized'],
 
   // Can create account without auth
-  'UsersController': {
+  'UserController': {
     'create': true,
     'login': true,
-    'logout': true
-  },
-
-  // Can authenticate without auth
-  'AuthController': {
-    '*': true
+    'logout': true,
+    'loginLdap': true
   }
 };

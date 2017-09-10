@@ -1,5 +1,5 @@
 /**
- * Users.js
+ * User.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -12,9 +12,14 @@ module.exports = {
   schema: true,
 
   attributes: {
+    username: {
+      type: 'string',
+      required: true,
+      unique: true
+    },
     email: {
       type: 'email',
-      required: 'true',
+      required: false,
       unique: true
     },
 
@@ -30,9 +35,12 @@ module.exports = {
       return obj;
     }
   },
+  autoCreatedAt: false,
+  autoUpdatedAt: false,
 
   beforeCreate: function (values, cb) {
     'use strict';
+
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
         return cb(err);
@@ -49,7 +57,7 @@ module.exports = {
 
   comparePassword: function (password, user, cb) {
     'use strict';
-    console.log(user);
+
     bcrypt.compare(password, user.encryptedPassword, function (err, match) {
       if (err) {
         return cb(err);
@@ -61,5 +69,4 @@ module.exports = {
       }
     });
   }
-
 };

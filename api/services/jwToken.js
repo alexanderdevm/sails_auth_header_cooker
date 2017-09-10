@@ -1,5 +1,5 @@
+/*global sails */
 var jwt = require('jsonwebtoken');
-var tokenSecret = "AWo5Nw3W2Uk96Og2RlDbsoSiApdpDAvf";
 
 // Generate token for the supplied payload
 module.exports.issue = function (payload) {
@@ -7,8 +7,8 @@ module.exports.issue = function (payload) {
 
   return jwt.sign(
     payload,
-    tokenSecret, {
-      expiresIn: 60 * 60 * 24
+    sails.config.jwt.tokenSecret, {
+      expiresIn: sails.config.jwt.expiresIn
     }
   );
 };
@@ -19,7 +19,7 @@ module.exports.verify = function (token, callback) {
 
   return jwt.verify(
     token,
-    tokenSecret, {},
+    sails.config.jwt.tokenSecret, {},
     callback
   );
 };
